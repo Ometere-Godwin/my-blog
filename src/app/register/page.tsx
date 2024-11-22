@@ -36,7 +36,7 @@ export default function RegisterPage() {
       }
 
       router.push("/login"); // Redirect to login page after successful registration
-    } catch (err) {
+    } catch {
       setError("Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
