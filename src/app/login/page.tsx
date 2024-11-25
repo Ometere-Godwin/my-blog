@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FiMail, FiLock } from "react-icons/fi";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -24,9 +25,14 @@ export default function LoginPage() {
         body: JSON.stringify({ username, password }),
       });
 
+      const data = await response.json(); // Get the response data
+
       if (!response.ok) {
-        throw new Error("Login failed");
+        throw new Error(data.message || "Login failed");
       }
+
+      // Store user information (e.g., token) if needed
+      localStorage.setItem("user", JSON.stringify(data.user)); // Assuming the API returns user data
 
       router.push("/posts"); // Redirect to posts page after successful login
     } catch {
@@ -49,38 +55,44 @@ export default function LoginPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
+            <div className="relative">
               <label
                 htmlFor="username"
                 className="block text-sm font-medium mb-2"
               >
-                Username
+                Email
               </label>
-              <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20"
-                required
-              />
+              <div className="flex items-center">
+                <FiMail className="absolute left-3 h-5 w-5" />
+                <input
+                  id="username"
+                  type="email"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full pl-10 px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20 h-12"
+                  required
+                />
+              </div>
             </div>
 
-            <div>
+            <div className="relative">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium mb-2"
               >
                 Password
               </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20"
-                required
-              />
+              <div className="flex items-center">
+                <FiLock className="absolute left-3 h-5 w-5" />
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20 h-12"
+                  required
+                />
+              </div>
             </div>
 
             <button

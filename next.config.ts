@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  images: {
+    domains: ["via.placeholder.com", "picsum.photos"],
+  },
 };
 
 export default nextConfig;

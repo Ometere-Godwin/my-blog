@@ -8,7 +8,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="w-full bg-foreground text-background p-4">
+    <nav className="w-full bg-foreground text-background p-4 sticky top-0 z-10 ">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
         <Link href="/" className="text-xl font-bold">
           TereSphere Blog

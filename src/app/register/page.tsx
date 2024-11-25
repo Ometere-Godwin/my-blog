@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FiUser, FiLock } from "react-icons/fi";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
@@ -31,8 +32,10 @@ export default function RegisterPage() {
         body: JSON.stringify({ username, password }),
       });
 
+      const data = await response.json(); // Get the response data
+
       if (!response.ok) {
-        throw new Error("Registration failed");
+        throw new Error(data.message || "Registration failed");
       }
 
       router.push("/login"); // Redirect to login page after successful registration
@@ -56,55 +59,64 @@ export default function RegisterPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
+            <div className="relative">
               <label
                 htmlFor="username"
                 className="block text-sm font-medium mb-2"
               >
                 Username
               </label>
-              <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20"
-                required
-              />
+              <div className="flex items-center">
+                <FiUser className="absolute left-3 h-5 w-5" />
+                <input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full pl-10 px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20 h-12"
+                  required
+                />
+              </div>
             </div>
 
-            <div>
+            <div className="relative">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium mb-2"
               >
                 Password
               </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20"
-                required
-              />
+              <div className="flex items-center">
+                <FiLock className="absolute left-3 h-5 w-5" />
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20 h-12"
+                  required
+                />
+              </div>
             </div>
 
-            <div>
+            <div className="relative">
               <label
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium mb-2"
               >
                 Confirm Password
               </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20"
-                required
-              />
+              <div className="flex items-center">
+                <FiLock className="absolute left-3 h-5 w-5" />
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full pl-10 px-4 py-2 rounded-lg border border-foreground/20 bg-background focus:outline-none focus:ring-2 focus:ring-foreground/20 h-12"
+                  required
+                />
+              </div>
             </div>
 
             <button
@@ -112,11 +124,7 @@ export default function RegisterPage() {
               disabled={isLoading}
               className="w-full bg-foreground text-background rounded-full py-3 font-medium hover:bg-opacity-90 transition-colors disabled:opacity-50"
             >
-              {isLoading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-t-4 border-b-4 border-foreground"></div>
-              ) : (
-                "Register"
-              )}
+              {isLoading ? "Registering..." : "Register"}
             </button>
 
             <div className="text-center mt-4">

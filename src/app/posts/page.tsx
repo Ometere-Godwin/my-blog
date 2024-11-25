@@ -20,15 +20,24 @@ export default function PostsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const generateDummyPosts = (): Post[] => {
+    return Array.from({ length: 10 }, (_, index) => ({
+      id: `post-${index + 1}`,
+      title: `Dummy Post Title ${index + 1}`,
+      content: `This is the content for dummy post number ${index + 1}.`,
+      author: `Author ${index + 1}`,
+      createdAt: new Date().toISOString(),
+      imageUrl: `https://picsum.photos/150?random=${index + 1}`,
+      likes: Math.floor(Math.random() * 100),
+      comments: Math.floor(Math.random() * 50),
+    }));
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("/api/v1/post");
-        if (!response.ok) {
-          throw new Error("Failed to fetch posts");
-        }
-        const data = await response.json();
-        setPosts(data.posts);
+        const data = generateDummyPosts();
+        setPosts(data);
       } catch {
         setError("Failed to load posts. Please try again later.");
       } finally {
